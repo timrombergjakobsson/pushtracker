@@ -1,0 +1,59 @@
+  language: ruby
+
+  rvm:
+  - 1.9.2
+  - 1.9.3
+  - rbx-18mode
+  - rbx-19mode
+  - jruby-18mode
+  - jruby-19mode
+  - jruby-head
+  - ruby-head
+
+  before_install:
+    - "export DISPLAY=:99.0"
+    - "sh -e /etc/init.d/xvfb start"
+
+  before_script:
+    - "export DISPLAY=:99.0"
+    - "sh -e /etc/init.d/xvfb start"
+    - sleep 3 # give xvfb some time to start
+    - rackup  # start a Web server
+    - sleep 3 # give Web server some time to bind to sockets, etc
+
+  jdk:
+  - openjdk6
+  - openjdk7
+  - oraclejdk7
+
+  matrix:
+  exclude:
+  rvm: 1.9.2
+  jdk: openjdk7
+  rvm: 1.9.2
+  jdk: oraclejdk7
+
+
+  after_script:
+   # Install the Heroku gem
+    - gem install Heroku
+  # Add your Heroku Git repo:
+    - git remote add Heroku git@heroku.com:pushtracker.git
+  # Add your Heroku API key:
+    - export HEROKU_API_KEY=f131fe0e854f6e50e9ef32317a4bdd5a8a880de2
+    - echo "Host heroku.com" >> ~/.ssh/config
+    - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+    - echo "CheckHostIP no" >> ~/.ssh/config
+    - echo "UserKnownHostsFile=/dev/null" >> ~/.ssh/config
+  # Clear your current Heroku SSH keys:
+
+    - heroku keys:clear
+  # Add a new SSH key to Heroku
+    - yes | heroku keys:add
+  # Push to Heroku!
+    - yes | git push heroku master
+  
+  notifications:
+    email:
+      - tim.jakobsson@gmail.com
+    on_failure: [always|never|change] # default: always
