@@ -4,4 +4,4 @@ pushtracker
 Visualize Github pushes
 
 
-https://travis-ci.org/timrombergjakobsson]/[pushtracker].png
+[![Build Status](https://travis-ci.org/[timrombergjakobsson]/[pushtracker].png)](https://travis-ci.org/[timrombergjakobsson]/[pushtracker])
